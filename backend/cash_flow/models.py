@@ -1,6 +1,7 @@
 from django.db import models
 
 class Status(models.Model):
+    """Статус движения денежных средств"""
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self) -> str:
@@ -8,4 +9,16 @@ class Status(models.Model):
 
     class Meta:
         verbose_name = "Status"
-        verbose_name_plural = "Status"
+        verbose_name_plural = "Statuses"
+
+
+class CashFlowType(models.Model):
+    """Тип движения денежных средств"""
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        verbose_name = "Cash flow type"
+        verbose_name_plural = "Cash flow types"

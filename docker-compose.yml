@@ -4,5 +4,17 @@ services:
       context: ./backend
     ports:
       - "8000:8000"
+    environment:
+      - DJANGO_ADMIN_USER=${DJANGO_ADMIN_USER}
+      - DJANGO_ADMIN_EMAIL=${DJANGO_ADMIN_EMAIL}
+      - DJANGO_ADMIN_PASSWORD=${DJANGO_ADMIN_PASSWORD}
+      - STATIC_ROOT=${STATIC_ROOT}
+      - MEDIA_ROOT=${MEDIA_ROOT}
+      - SQLITE_PATH=${SQLITE_PATH}
     volumes:
-      - ./backend:/app
+      - ./backend:/app             # код
+      - backend-data:/app_data     # статика, БД, фикстуры
+  
+volumes:
+  backend-data:
+  

@@ -1,0 +1,7 @@
+[
+    {"model": "cash_flow.status", "pk": 1, "fields": {"name": "Бизнес"}},
+    {"model": "cash_flow.status", "pk": 2, "fields": {"name": "Личное"}},
+    {"model": "cash_flow.status", "pk": 3, "fields": {"name": "Налог"}},
+    {"model": "cash_flow.cashflowtype", "pk": 1, "fields": {"name": "Пополнение"}},
+    {"model": "cash_flow.cashflowtype", "pk": 2, "fields": {"name": "Списание"}}
+]
