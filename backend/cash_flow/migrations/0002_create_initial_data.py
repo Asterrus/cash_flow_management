@@ -7,6 +7,9 @@ from django.db.migrations.state import Apps
 def create_initial_data(apps: Apps, schema_editor):
     Status = apps.get_model('cash_flow', 'Status')
     CashFlowType = apps.get_model('cash_flow', 'CashFlowType')
+    Category = apps.get_model('cash_flow', 'Category')
+    Subcategory = apps.get_model('cash_flow', 'Subcategory')
+    
     
     Status.objects.bulk_create([
         Status(id=1, name='Бизнес'),
@@ -18,15 +21,32 @@ def create_initial_data(apps: Apps, schema_editor):
         CashFlowType(id=1, name='Списание'),
         CashFlowType(id=2, name='Пополнение'),    
     ])
+    
+    Category.objects.bulk_create([
+        Category(id=1, name='Инфраструктура'),
+        Category(id=2, name='Маркетинг'),
+    ])
+    
+    Subcategory.objects.bulk_create([
+        Subcategory(id=1, name='VPS', category_id=1),
+        Subcategory(id=2, name='Proxy', category_id=1),
+        Subcategory(id=3, name='Farpost', category_id=2),
+        Subcategory(id=4, name='Avito', category_id=2),
+    ])
 
 
 def delete_initial_data(apps, schema_editor):
     Status = apps.get_model('cash_flow', 'Status')
     CashFlowType = apps.get_model('cash_flow', 'CashFlowType')
+    Category = apps.get_model('cash_flow', 'Category')
+    Subcategory = apps.get_model('cash_flow', 'Subcategory')
     
     Status.objects.all().delete()
     CashFlowType.objects.all().delete()
-    
+    Category.objects.all().delete()
+    Subcategory.objects.all().delete()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
