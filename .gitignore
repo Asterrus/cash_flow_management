@@ -4,3 +4,6 @@ __pycache__/
 
 .vscode/
 .idea/
+
+backend/staticfiles
+backend/db.sqlite3
