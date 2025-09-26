@@ -1,0 +1,32 @@
+line-length = 100
+
+exclude = [
+    ".venv",
+    "**/migrations/**",
+    "manage.py",
+    "cash_flow_management/",
+    "apps.py"
+]
+
+[lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "D100",
+    "D104",
+    "D105",
+    "D203",
+    "D213",
+    "D400",
+    "D415",
+    "INP001",
+]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[lint.per-file-ignores]
+"models.py" = ["D106"]
+"admin.py" = ["RUF012"]
