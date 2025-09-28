@@ -56,3 +56,42 @@ class Subcategory(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class CashFlow(models.Model):
+    """Движение денежных средств"""
+
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT,
+    )
+    cash_flow_type = models.ForeignKey(
+        CashFlowType,
+        on_delete=models.PROTECT,
+    )
+    subcategory = models.ForeignKey(
+        Subcategory,
+        on_delete=models.PROTECT,
+    )
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField(blank=True, default="")
+
+    class Meta:
+        verbose_name = "Cash flow"
+        verbose_name_plural = "Cash flows"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["created_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return (
+            f"{self.amount} | {self.cash_flow_type} | {self.category}"
+            f" | {self.subcategory} | {self.status} | {self.created_at}"
+        )
+
+    @property
+    def category(self) -> Category:
+        """Return category of cash flow"""
+        return self.subcategory.category

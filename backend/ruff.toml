@@ -28,5 +28,5 @@ indent-style = "space"
 docstring-code-format = true
 
 [lint.per-file-ignores]
-"models.py" = ["D106"]
+"models.py" = ["D106", "RUF012"]
 "admin.py" = ["RUF012"]

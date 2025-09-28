@@ -1,7 +1,10 @@
+import logging
+
 from django.contrib import admin
 
-# Register your models here.
-from .models import CashFlowType, Category, Status, Subcategory
+from .models import CashFlow, CashFlowType, Category, Status, Subcategory
+
+logger = logging.getLogger(__name__)
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -44,7 +47,16 @@ class SubcategoryAdmin(admin.ModelAdmin):
     ]
 
 
+class CashFlowAdmin(admin.ModelAdmin):
+    """Admin for CashFlow model"""
+
+    fieldsets = [
+        (None, {"fields": ["amount", "cash_flow_type", "subcategory", "status", "comment"]}),
+    ]
+
+
 admin.site.register(Status, StatusAdmin)
 admin.site.register(CashFlowType, CashFlowTypeAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Subcategory, SubcategoryAdmin)
+admin.site.register(CashFlow, CashFlowAdmin)
