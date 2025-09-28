@@ -23,8 +23,8 @@ def create_initial_data(apps: Apps, schema_editor):
     ])
     
     Category.objects.bulk_create([
-        Category(id=1, name='Инфраструктура'),
-        Category(id=2, name='Маркетинг'),
+        Category(id=1, name='Инфраструктура', cash_flow_type_id=1),
+        Category(id=2, name='Маркетинг', cash_flow_type_id=1),
     ])
     
     Subcategory.objects.bulk_create([

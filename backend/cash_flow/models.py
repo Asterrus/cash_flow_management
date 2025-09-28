@@ -31,6 +31,11 @@ class Category(models.Model):
     """Категория движения денежных средств"""
 
     name = models.CharField(max_length=100, unique=True)
+    cash_flow_type = models.ForeignKey(
+        CashFlowType,
+        on_delete=models.PROTECT,
+        related_name="categories",
+    )
 
     class Meta:
         verbose_name = "Category"
@@ -46,7 +51,7 @@ class Subcategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="subcategories",
     )
 

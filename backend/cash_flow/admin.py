@@ -14,6 +14,11 @@ class StatusAdmin(admin.ModelAdmin):
         (None, {"fields": ["name"]}),
     ]
 
+class CategoryInline(admin.TabularInline):
+    """Inline для отображения категорий в типе движения денежных средств"""
+
+    model = Category
+    extra = 1
 
 class CashFlowTypeAdmin(admin.ModelAdmin):
     """Admin for CashFlowType model"""
@@ -21,6 +26,7 @@ class CashFlowTypeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {"fields": ["name"]}),
     ]
+    inlines = [CategoryInline]
 
 
 class SubcategoryInline(admin.TabularInline):
@@ -34,7 +40,7 @@ class CategoryAdmin(admin.ModelAdmin):
     """Admin for Category model"""
 
     fieldsets = [
-        (None, {"fields": ["name"]}),
+        (None, {"fields": ["name", "cash_flow_type"]}),
     ]
     inlines = [SubcategoryInline]
 
