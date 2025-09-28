@@ -2,8 +2,6 @@
 
 __pycache__
 
-db.sqlite3
-
 *.py[cod]
 
 staticfiles

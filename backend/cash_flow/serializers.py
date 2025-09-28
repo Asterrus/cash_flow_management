@@ -22,7 +22,7 @@ class CashFlowTypeSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category model"""
 
-    cash_flow_type = serializers.PrimaryKeyRelatedField(read_only=True)
+    cash_flow_type = serializers.PrimaryKeyRelatedField(queryset=CashFlowType.objects.all())
     cash_flow_type_name = serializers.CharField(source="cash_flow_type.name", read_only=True)
 
     class Meta:
@@ -33,7 +33,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class SubcategorySerializer(serializers.ModelSerializer):
     """Serializer for Subcategory model"""
 
-    category = serializers.PrimaryKeyRelatedField(read_only=True)
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     category_name = serializers.CharField(source="category.name", read_only=True)
 
     class Meta:
@@ -44,9 +44,9 @@ class SubcategorySerializer(serializers.ModelSerializer):
 class CashFlowSerializer(serializers.ModelSerializer):
     """Serializer for CashFlow model"""
 
-    subcategory = serializers.PrimaryKeyRelatedField(read_only=True)
-    cash_flow_type = serializers.PrimaryKeyRelatedField(read_only=True)
-    status = serializers.PrimaryKeyRelatedField(read_only=True)
+    subcategory = serializers.PrimaryKeyRelatedField(queryset=Subcategory.objects.all())
+    cash_flow_type = serializers.PrimaryKeyRelatedField(queryset=CashFlowType.objects.all())
+    status = serializers.PrimaryKeyRelatedField(queryset=Status.objects.all())
 
     cash_flow_type_name = serializers.CharField(source="cash_flow_type.name", read_only=True)
     category_name = serializers.CharField(source="subcategory.category.name", read_only=True)
