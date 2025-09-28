@@ -14,11 +14,13 @@ class StatusAdmin(admin.ModelAdmin):
         (None, {"fields": ["name"]}),
     ]
 
+
 class CategoryInline(admin.TabularInline):
     """Inline для отображения категорий в типе движения денежных средств"""
 
     model = Category
     extra = 1
+
 
 class CashFlowTypeAdmin(admin.ModelAdmin):
     """Admin for CashFlowType model"""

@@ -21,8 +21,9 @@ class CashFlowTypeSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category model"""
+
     cash_flow_type = serializers.PrimaryKeyRelatedField(read_only=True)
-    cash_flow_type_name = serializers.CharField(source='cash_flow_type.name', read_only=True)
+    cash_flow_type_name = serializers.CharField(source="cash_flow_type.name", read_only=True)
 
     class Meta:
         model = Category
@@ -31,8 +32,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class SubcategorySerializer(serializers.ModelSerializer):
     """Serializer for Subcategory model"""
+
     category = serializers.PrimaryKeyRelatedField(read_only=True)
-    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_name = serializers.CharField(source="category.name", read_only=True)
 
     class Meta:
         model = Subcategory
@@ -41,13 +43,27 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
 class CashFlowSerializer(serializers.ModelSerializer):
     """Serializer for CashFlow model"""
+
     subcategory = serializers.PrimaryKeyRelatedField(read_only=True)
     cash_flow_type = serializers.PrimaryKeyRelatedField(read_only=True)
     status = serializers.PrimaryKeyRelatedField(read_only=True)
 
-    cash_flow_type_name = serializers.CharField(source='cash_flow_type.name', read_only=True)
-    category_name = serializers.CharField(source='subcategory.category.name', read_only=True)
-    subcategory_name = serializers.CharField(source='subcategory.name', read_only=True)
+    cash_flow_type_name = serializers.CharField(source="cash_flow_type.name", read_only=True)
+    category_name = serializers.CharField(source="subcategory.category.name", read_only=True)
+    subcategory_name = serializers.CharField(source="subcategory.name", read_only=True)
+    status_name = serializers.CharField(source="status.name", read_only=True)
+
     class Meta:
         model = CashFlow
-        fields = ["status", "cash_flow_type", "cash_flow_type_name", "category_name", "subcategory", "subcategory_name", "amount", "created_at", "comment"]
+        fields = [
+            "status",
+            "cash_flow_type",
+            "cash_flow_type_name",
+            "category_name",
+            "subcategory",
+            "subcategory_name",
+            "amount",
+            "created_at",
+            "comment",
+            "status_name",
+        ]

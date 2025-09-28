@@ -20,6 +20,7 @@ ignore = [
     "D400",
     "D415",
     "INP001",
+    "RUF012",
 ]
 
 [format]
@@ -28,5 +29,7 @@ indent-style = "space"
 docstring-code-format = true
 
 [lint.per-file-ignores]
-"models.py" = ["D106", "RUF012"]
-"admin.py" = ["RUF012"]
+"models.py" = ["D106"]
+"serializers.py" = ["D106"]
+"views.py" = ["D101"]
+"filters.py" = ["D101", "D106"]

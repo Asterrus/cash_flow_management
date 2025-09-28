@@ -1,6 +1,16 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
-from .models import CashFlowType, Status, Category, Subcategory, CashFlow
-from .serializers import CashFlowTypeSerializer, StatusSerializer, CategorySerializer, SubcategorySerializer, CashFlowSerializer
+
+from .filters import CashFlowFilter
+from .models import CashFlow, CashFlowType, Category, Status, Subcategory
+from .serializers import (
+    CashFlowSerializer,
+    CashFlowTypeSerializer,
+    CategorySerializer,
+    StatusSerializer,
+    SubcategorySerializer,
+)
+
 
 class CashFlowTypeViewSet(viewsets.ModelViewSet):
     queryset = CashFlowType.objects.all()
@@ -27,8 +37,10 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 
 
 class CashFlowViewSet(viewsets.ModelViewSet):
-    queryset = CashFlow.objects.all().select_related("cash_flow_type", "status", "subcategory", "subcategory__category")
+    queryset = CashFlow.objects.all().select_related(
+        "cash_flow_type", "status", "subcategory", "subcategory__category"
+    )
     serializer_class = CashFlowSerializer
     permission_classes = [permissions.AllowAny]
-
-    
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = CashFlowFilter
