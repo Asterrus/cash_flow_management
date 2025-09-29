@@ -15,7 +15,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 3s
       timeout: 3s
-      retries: 3
+      retries: 5
 
   backend:
     build:
@@ -38,6 +38,11 @@ services:
     volumes:
       - ./backend:/app             # код
       - backend-data:/app_data     # статика, БД, фикстуры
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "check"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -52,9 +57,12 @@ services:
       - /app/node_modules
     environment:
       VITE_API_URL: "http://localhost:8000/api"
-    command: npm run dev -- --host 0.0.0.0 --port 3000
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+
+    command: npm run dev -- --host 0.0.0.0 --port 3000
+
 volumes:
   db_data:
   backend-data:
