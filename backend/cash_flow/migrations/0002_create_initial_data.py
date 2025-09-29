@@ -10,28 +10,42 @@ def create_initial_data(apps: Apps, schema_editor):
     Category = apps.get_model('cash_flow', 'Category')
     Subcategory = apps.get_model('cash_flow', 'Subcategory')
     
+    status_1 = Status(name='Бизнес')
+    status_2 = Status(name='Личное')
+    status_3 = Status(name='Налог')
     
     Status.objects.bulk_create([
-        Status(id=1, name='Бизнес'),
-        Status(id=2, name='Личное'),
-        Status(id=3, name='Налог'),
+        status_1,
+        status_2,
+        status_3,
     ])
-    
+
+    cash_flow_type_1 = CashFlowType(name='Списание')
+    cash_flow_type_2 = CashFlowType(name='Пополнение')
+
     CashFlowType.objects.bulk_create([
-        CashFlowType(id=1, name='Списание'),
-        CashFlowType(id=2, name='Пополнение'),    
+        cash_flow_type_1,
+        cash_flow_type_2,
     ])
-    
+
+    category_1 = Category(name='Инфраструктура', cash_flow_type_id=1)
+    category_2 = Category(name='Маркетинг', cash_flow_type_id=1)
+
     Category.objects.bulk_create([
-        Category(id=1, name='Инфраструктура', cash_flow_type_id=1),
-        Category(id=2, name='Маркетинг', cash_flow_type_id=1),
+        category_1,
+        category_2,
     ])
-    
+
+    subcategory_1 = Subcategory(name='VPS', category_id=1)
+    subcategory_2 = Subcategory(name='Proxy', category_id=1)
+    subcategory_3 = Subcategory(name='Farpost', category_id=2)
+    subcategory_4 = Subcategory(name='Avito', category_id=2)
+
     Subcategory.objects.bulk_create([
-        Subcategory(id=1, name='VPS', category_id=1),
-        Subcategory(id=2, name='Proxy', category_id=1),
-        Subcategory(id=3, name='Farpost', category_id=2),
-        Subcategory(id=4, name='Avito', category_id=2),
+        subcategory_1,
+        subcategory_2,
+        subcategory_3,
+        subcategory_4,
     ])
 
 

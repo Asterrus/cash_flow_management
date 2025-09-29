@@ -8,7 +8,8 @@ class StatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Status
-        fields = ["name"]
+        fields = ["id", "name"]
+        read_only_fields = ("id",)
 
 
 class CashFlowTypeSerializer(serializers.ModelSerializer):
@@ -16,7 +17,8 @@ class CashFlowTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CashFlowType
-        fields = ["name"]
+        fields = ["id", "name"]
+        read_only_fields = ("id",)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,7 +29,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["name", "cash_flow_type", "cash_flow_type_name"]
+        fields = ["id", "name", "cash_flow_type", "cash_flow_type_name"]
+        read_only_fields = ("id",)
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -38,7 +41,8 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subcategory
-        fields = ["name", "category", "category_name"]
+        fields = ["id", "name", "category", "category_name"]
+        read_only_fields = ("id",)
 
 
 class CashFlowSerializer(serializers.ModelSerializer):
@@ -56,6 +60,7 @@ class CashFlowSerializer(serializers.ModelSerializer):
     class Meta:
         model = CashFlow
         fields = [
+            "id",
             "status",
             "cash_flow_type",
             "cash_flow_type_name",
@@ -67,3 +72,11 @@ class CashFlowSerializer(serializers.ModelSerializer):
             "comment",
             "status_name",
         ]
+        read_only_fields = (
+            "id",
+            "created_at",
+            "cash_flow_type_name",
+            "category_name",
+            "subcategory_name",
+            "status_name",
+        )

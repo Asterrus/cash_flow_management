@@ -121,8 +121,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
+    "PAGE_SIZE": 1,  # Default page size, will be overridden by page_size query param
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "PAGE_SIZE_QUERY_PARAM": "page_size",  # Allow client to override page size
+    "MAX_PAGE_SIZE": 100,  # Maximum limit for page_size
 }
 
 # CORS: allow local frontend
