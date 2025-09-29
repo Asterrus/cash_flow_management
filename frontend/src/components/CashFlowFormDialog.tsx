@@ -19,18 +19,12 @@ export interface CashFlowFormDialogProps {
   subcategories: Subcategory[];
   statuses: Status[];
   onClose: () => void;
-  onSubmit: (payload: { id?: ID; status: ID; cash_flow_type: ID; category?: ID; subcategory: ID; amount: string; comment?: string }) => void;
+  onSubmit: (payload: { id?: ID; status: ID; cash_flow_type: ID; category: ID; subcategory: ID; amount: string; comment?: string }) => void;
 }
 
 export default function CashFlowFormDialog({ open, initial, types, categories, subcategories, statuses, onClose, onSubmit }: CashFlowFormDialogProps) {
   const [cashFlowType, setCashFlowType] = useState<ID | "">(initial?.cash_flow_type ?? "");
-  const [category, setCategory] = useState<ID | "">(() => {
-    if (initial?.subcategory) {
-      const sc = subcategories.find((s) => s.id === initial.subcategory)
-      return sc?.category ?? ""
-    }
-    return ""
-  });
+  const [category, setCategory] = useState<ID | "">(initial?.category ?? "");
   const [subcategory, setSubcategory] = useState<ID | "">(initial?.subcategory ?? "");
   const [status, setStatus] = useState<ID | "">(initial?.status ?? "");
   const [amount, setAmount] = useState<string>(initial?.amount ?? "");
@@ -40,19 +34,13 @@ export default function CashFlowFormDialog({ open, initial, types, categories, s
     // Reset on open/initial change
     if (open) {
       setCashFlowType(initial?.cash_flow_type ?? "");
-      if (initial?.subcategory) {
-        const sc = subcategories.find((s) => s.id === initial.subcategory)
-        setCategory(sc?.category ?? "")
-      } else {
-        setCategory("")
-      }
+      setCategory(initial?.category ?? "");
       setSubcategory(initial?.subcategory ?? "");
       setStatus(initial?.status ?? "");
       setAmount(initial?.amount ?? "");
       setComment(initial?.comment ?? "");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, initial?.id])
+  }, [open, initial?.id, initial?.cash_flow_type, initial?.category, initial?.subcategory, initial?.status, initial?.amount, initial?.comment])
 
   const filteredCategories = useMemo(() => {
     return cashFlowType === "" ? [] : categories.filter((c) => c.cash_flow_type === cashFlowType)
@@ -70,7 +58,19 @@ export default function CashFlowFormDialog({ open, initial, types, categories, s
 
   function handleSubmit() {
     if (!cashFlowType || !category || !subcategory || !status || !amount || !isAmountValid) return;
-    onSubmit({ id: isEdit ? (initial!.id as ID) : undefined, status: status as ID, cash_flow_type: cashFlowType as ID, category: category as ID, subcategory: subcategory as ID, amount: String(amount), comment: comment || undefined })
+    
+    const payload = {
+      id: isEdit ? (initial!.id as ID) : undefined,
+      status: status as ID,
+      cash_flow_type: cashFlowType as ID,
+      category: category as ID,
+      subcategory: subcategory as ID,
+      amount: String(amount),
+      comment: comment || undefined
+    };
+    
+    console.log('Submitting payload:', payload); // For debugging
+    onSubmit(payload);
   }
 
   return (

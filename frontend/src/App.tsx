@@ -81,13 +81,13 @@ function App() {
     }
   };
 
-  const handleSubmit = async (payload: { id?: ID; status: ID; cash_flow_type: ID; category?: ID; subcategory: ID; amount: string; comment?: string }) => {
+  const handleSubmit = async (payload: { id?: ID; status: ID; cash_flow_type: ID; category: ID; subcategory: ID; amount: string; comment?: string }) => {
     try {
       if (payload.id) {
         const { id, ...rest } = payload;
         await api.updateCashFlow(id as ID, rest);
       } else {
-        const { id: _omit, category: _omit2, ...rest } = payload;
+        const { id: _omit, ...rest } = payload; // keep category in payload
         await api.createCashFlow(rest);
       }
       setFormOpen(false);

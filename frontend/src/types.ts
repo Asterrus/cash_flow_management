@@ -28,6 +28,7 @@ export interface CashFlow {
   id: ID;
   status: ID;
   cash_flow_type: ID;
+  category: ID;
   cash_flow_type_name: string;
   category_name: string;
   subcategory: ID;

@@ -94,15 +94,15 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Статика
+# Static files
 STATIC_URL = "/static/"
 STATIC_ROOT = os.environ.get("STATIC_ROOT", "/app_data/staticfiles")
 
-# Медиа
+# Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.environ.get("MEDIA_ROOT", "/app_data/media")
 
-# База данных
+# Database
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -121,10 +121,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 1,  # Default page size, will be overridden by page_size query param
+    "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "PAGE_SIZE_QUERY_PARAM": "page_size",  # Allow client to override page size
-    "MAX_PAGE_SIZE": 100,  # Maximum limit for page_size
+    "PAGE_SIZE_QUERY_PARAM": "page_size",
+    "MAX_PAGE_SIZE": 100,
 }
 
 # CORS: allow local frontend

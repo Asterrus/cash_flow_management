@@ -74,6 +74,10 @@ class CashFlow(models.Model):
         CashFlowType,
         on_delete=models.PROTECT,
     )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+    )
     subcategory = models.ForeignKey(
         Subcategory,
         on_delete=models.PROTECT,
@@ -89,14 +93,15 @@ class CashFlow(models.Model):
         indexes = [
             models.Index(fields=["created_at"]),
         ]
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(amount__gt=0),
+                name="amount_must_be_positive",
+            ),
+        ]
 
     def __str__(self) -> str:
         return (
             f"{self.amount} | {self.cash_flow_type} | {self.category}"
             f" | {self.subcategory} | {self.status} | {self.created_at}"
         )
-
-    @property
-    def category(self) -> Category:
-        """Return category of cash flow"""
-        return self.subcategory.category

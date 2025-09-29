@@ -13,7 +13,7 @@ from .serializers import (
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 1
+    page_size = 10
     page_size_query_param = "page_size"
     max_page_size = 100
 
@@ -48,7 +48,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 
 class CashFlowViewSet(viewsets.ModelViewSet):
     queryset = CashFlow.objects.all().select_related(
-        "cash_flow_type", "status", "subcategory", "subcategory__category"
+        "cash_flow_type", "status", "subcategory", "category"
     )
     serializer_class = CashFlowSerializer
     permission_classes = [permissions.AllowAny]

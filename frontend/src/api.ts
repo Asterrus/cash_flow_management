@@ -76,12 +76,13 @@ export const api = {
   createCashFlow: (payload: {
     status: ID
     cash_flow_type: ID
+    category: ID
     subcategory: ID
     amount: string
     comment?: string
   }) => http<CashFlow>('/cash_flows/', { method: 'POST', body: JSON.stringify(payload) }),
 
-  updateCashFlow: (id: ID, payload: Partial<{ status: ID; cash_flow_type: ID; subcategory: ID; amount: string; comment?: string }>) =>
+  updateCashFlow: (id: ID, payload: Partial<{ status: ID; cash_flow_type: ID; category: ID; subcategory: ID; amount: string; comment?: string }>) =>
     http<CashFlow>(`/cash_flows/${id}/`, { method: 'PATCH', body: JSON.stringify(payload) }),
 
   deleteCashFlow: (id: ID) => http<void>(`/cash_flows/${id}/`, { method: 'DELETE' }),
