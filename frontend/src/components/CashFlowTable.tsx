@@ -1,24 +1,53 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TableSortLabel } from "@mui/material";
 import type { CashFlow } from "../types";
 
 export interface CashFlowTableProps {
   rows: CashFlow[];
   onEdit: (row: CashFlow) => void;
   onDelete: (row: CashFlow) => void;
+  sortKey?: string;
+  sortDir?: 'asc' | 'desc';
+  onSortChange?: (key: string) => void;
 }
 
-export default function CashFlowTable({ rows, onEdit, onDelete }: CashFlowTableProps) {
+export default function CashFlowTable({ rows, onEdit, onDelete, sortKey, sortDir, onSortChange }: CashFlowTableProps) {
+  const active = (key: string) => sortKey === key;
+  const handleSort = (key: string) => () => onSortChange && onSortChange(key);
   return (
     <TableContainer component={Paper}>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Дата</TableCell>
-            <TableCell>Тип</TableCell>
-            <TableCell>Категория</TableCell>
-            <TableCell>Подкатегория</TableCell>
-            <TableCell align="right">Сумма</TableCell>
-            <TableCell>Статус</TableCell>
+            <TableCell sortDirection={active('created_at') ? sortDir : false}>
+              <TableSortLabel active={active('created_at')} direction={active('created_at') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('created_at')}>
+                Дата
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={active('cash_flow_type__name') ? sortDir : false}>
+              <TableSortLabel active={active('cash_flow_type__name')} direction={active('cash_flow_type__name') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('cash_flow_type__name')}>
+                Тип
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={active('category__name') ? sortDir : false}>
+              <TableSortLabel active={active('category__name')} direction={active('category__name') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('category__name')}>
+                Категория
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={active('subcategory__name') ? sortDir : false}>
+              <TableSortLabel active={active('subcategory__name')} direction={active('subcategory__name') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('subcategory__name')}>
+                Подкатегория
+              </TableSortLabel>
+            </TableCell>
+            <TableCell align="right" sortDirection={active('amount') ? sortDir : false}>
+              <TableSortLabel active={active('amount')} direction={active('amount') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('amount')}>
+                Сумма
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={active('status__name') ? sortDir : false}>
+              <TableSortLabel active={active('status__name')} direction={active('status__name') ? (sortDir || 'asc') : 'asc'} onClick={handleSort('status__name')}>
+                Статус
+              </TableSortLabel>
+            </TableCell>
             <TableCell>Комментарий</TableCell>
             <TableCell align="right">Действия</TableCell>
           </TableRow>

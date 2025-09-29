@@ -51,7 +51,8 @@ export interface CashFlowFilters {
   cash_flow_type?: ID | '';
   category?: ID | '';
   subcategory?: ID | '';
-  created_at_after?: string; // YYYY-MM-DD
-  created_at_before?: string; // YYYY-MM-DD
-  page_size?: number; // page size (e.g., 10 or 30)
+  created_at_after?: string;
+  created_at_before?: string;
+  page_size?: number;
+  ordering?: string;
 }

@@ -15,7 +15,7 @@ function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 
-  const [filters, setFilters] = useState<CashFlowFilters>({ page_size: 10 });
+  const [filters, setFilters] = useState<CashFlowFilters>({ page_size: 10, ordering: '-created_at' });
   const [pageSize, setPageSize] = useState<number>(10);
   const [dictPageSizes, setDictPageSizes] = useState<{ statuses: number; types: number; categories: number; subcategories: number }>({
     statuses: 10,
@@ -124,69 +124,77 @@ function App() {
   const content = useMemo(() => {
     return (
       <Stack direction="row" spacing={0} sx={{ height: '100%', width: '100%' }}>
+        {/* Левая часть: таблица */}
         <Box flex={1} sx={{ overflow: 'auto', height: '100%' }}>
           <Stack direction="row" spacing={2} alignItems="center" mb={1}>
             <Box sx={{ ml: 'auto' }} />
             {mode === 'cash_flows' && (
-              <Button sx={{ ml: 2 }} variant="contained" onClick={() => { setEditing(null); setFormOpen(true); }}>Добавить</Button>
+              <Button sx={{ ml: 2 }} variant="contained" onClick={() => { setEditing(null); setFormOpen(true); }}>
+                Добавить
+              </Button>
             )}
           </Stack>
-
-          {/* Body */}
+  
           {mode === 'cash_flows' ? (
             <>
-              {loading ? <CircularProgress /> : error ? <Alert severity="error">Ошибка: {error}</Alert> : (
-                <>
-                  <Stack direction="row" spacing={2}>
-                    <FiltersBar
-                      statuses={statuses}
-                      types={types}
-                      categories={categories}
-                      subcategories={subcategories}
-                      value={filters}
-                      onChange={setFilters}
-                      onReset={resetFilters}
-                    />
-                    <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
-                      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} gap={2}>
-                        <Button variant="outlined" size="small" disabled={!data?.previous} onClick={() => data?.previous && api.getCashFlowsByUrl(data.previous).then(setData)}>← Предыдущая</Button>
-                        
-                        <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="text.secondary">На странице:</Typography>
-                          <select
-                            value={pageSize}
-                            onChange={(e) => { 
-                              const v = Number(e.target.value); 
-                              setPageSize(v);
-                              // Update filters with the new page size
-                              setFilters(f => ({
-                                ...f,
-                                page_size: v,
-                                page: 1 // Reset to first page when changing page size
-                              }));
-                            }}
-                            style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc' }}
-                          >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
-                          </select>
-                        </Box>
-                        
-                        <Button variant="outlined" size="small" disabled={!data?.next} onClick={() => data?.next && api.getCashFlowsByUrl(data.next).then(setData)}>Следующая →</Button>
-                      </Box>
-                      <CashFlowTable 
-                        rows={data?.results ?? []} 
-                        onEdit={(row) => { setEditing(row); setFormOpen(true); }} 
-                        onDelete={(row) => { setToDelete(row); setConfirmOpen(true); }} 
-                      />
+              {loading ? (
+                <CircularProgress />
+              ) : error ? (
+                <Alert severity="error">Ошибка: {error}</Alert>
+              ) : (
+                <Stack direction="row" spacing={2} width="100%">
+                                    <FiltersBar
+                    statuses={statuses}
+                    types={types}
+                    categories={categories}
+                    subcategories={subcategories}
+                    value={filters}
+                    onChange={setFilters}
+                    onReset={resetFilters}
+                  />
+                  <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
 
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} gap={2}>
+                    <Button variant="outlined" size="small" disabled={!data?.previous} onClick={() => data?.previous && api.getCashFlowsByUrl(data.previous).then(setData)}>← Предыдущая</Button>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <Typography variant="body2" color="text.secondary">На странице:</Typography>
+                      <select
+                        value={pageSize}
+                        onChange={(e) => { 
+                          const v = Number(e.target.value); 
+                          setPageSize(v);
+                          setFilters(f => ({ ...f, page_size: v, page: 1 }));
+                        }}
+                        style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                      >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                      </select>
+                    </Box>
+                    <Button variant="outlined" size="small" disabled={!data?.next} onClick={() => data?.next && api.getCashFlowsByUrl(data.next).then(setData)}>Следующая →</Button>
+                  </Box>
+                  
+                  <CashFlowTable 
+                    rows={data?.results ?? []} 
+                    onEdit={(row) => { setEditing(row); setFormOpen(true); }} 
+                    onDelete={(row) => { setToDelete(row); setConfirmOpen(true); }} 
+                    sortKey={(filters.ordering || '').replace(/^[-+]/, '') || undefined}
+                    sortDir={filters.ordering?.startsWith('-') ? 'desc' : 'asc'}
+                    onSortChange={(key) => {
+                      setFilters(f => {
+                        const currentKey = (f.ordering || '').replace(/^[-+]/, '')
+                        const currentDir = f.ordering?.startsWith('-') ? 'desc' : 'asc'
+                        const nextDir = currentKey === key && currentDir === 'asc' ? 'desc' : 'asc'
+                        const nextOrdering = nextDir === 'desc' ? `-${key}` : key
+                        return { ...f, ordering: nextOrdering, page: 1 }
+                      })
+                    }}
+                  />
                   </Stack>
-
-                  </Stack>
-                </>
+                </Stack>
               )}
             </>
           ) : (
@@ -200,6 +208,8 @@ function App() {
             />
           )}
         </Box>
+  
+        {/* Правая часть: кнопки */}
         <Box sx={{ width: 260, height: '100%', flexShrink: 0 }}>
           <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography variant="subtitle1" gutterBottom>Разделы</Typography>
@@ -215,6 +225,7 @@ function App() {
       </Stack>
     );
   }, [mode, loading, error, data, pageSize, dictPageSizes, types, categories, statuses, subcategories, filters]);
+  
 
   return (
     <Box sx={{ bgcolor: '#f6f7fb', height: '100vh', width: '100vw', overflow: 'hidden' }}>

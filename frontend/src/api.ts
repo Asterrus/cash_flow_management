@@ -97,5 +97,6 @@ function toApiFilters(f: CashFlowFilters) {
     created_at_after: f.created_at_after,
     created_at_before: f.created_at_before,
     page_size: f.page_size,
+    ordering: f.ordering,
   }
 }
