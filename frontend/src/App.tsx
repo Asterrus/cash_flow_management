@@ -147,7 +147,7 @@ function App() {
                       onChange={setFilters}
                       onReset={resetFilters}
                     />
-                    <Stack direction="column" spacing={2}>
+                    <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
                       <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} gap={2}>
                         <Button variant="outlined" size="small" disabled={!data?.previous} onClick={() => data?.previous && api.getCashFlowsByUrl(data.previous).then(setData)}>← Предыдущая</Button>
                         
